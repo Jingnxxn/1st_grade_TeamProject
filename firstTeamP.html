@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>마커에 클릭 이벤트 등록하기</title>
+    
+    <meta charset="utf-8">
+    <title>geolocation으로 마커 표시하기</title>
+
+	<meta charset="utf-8">
+	<title>다음 지도 API</title>
+    
+    <meta charset="utf-8">
+    <title>다양한 이미지 마커 표시하기</title>
+    <style>
+#mapwrap{position:relative;overflow:hidden;}
+.category, .category *{margin:0;padding:0;color:#000;}   
+.category {position:absolute;overflow:hidden;top:10px;left:10px;width:150px;height:50px;z-index:10;border:1px solid black;font-family:'Malgun Gothic','맑은 고딕',sans-serif;font-size:12px;text-align:center;background-color:#fff;}
+.category .menu_selected {background:#FF5F4A;color:#fff;border-left:1px solid #915B2F;border-right:1px solid #915B2F;margin:0 -1px;} 
+.category li{list-style:none;float:left;width:50px;height:45px;padding-top:5px;cursor:pointer;} 
+.category .ico_comm {display:block;margin:0 auto 2px;width:22px;height:26px;background:url('https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png') no-repeat;} 
+.category .ico_밥 {background-position:-10px 0;}  
+.category .ico_술 {background-position:-10px -36px;}   
+.category .ico_카페 {background-position:-10px -72px;}
+</style>
+    
+</head>
+<body>
+<div id="mapwrap">
+    <div id="map" style="width: 100%;height: 600px;"></div>
+    <p><em>마커를 클릭해주세요!</em></p> 
+    <div id="mapwrap"> 
+        <!-- 지도가 표시될 div -->
+        <div id="map" style="width: 1546px;height:700px;"></div>
+        <!-- 지도 위에 표시될 마커 카테고리 -->
+        <div class="category">
+            <ul>
+                <li id="밥메뉴" onclick="changeMarker('밥')">
+                    <span class="ico_comm ico_밥"></span>
+                    밥집
+                </li>
+                <li id="술메뉴" onclick="changeMarker('술')">
+                    <span class="ico_comm ico_술"></span>
+                    술집
+                </li>
+                <li id="카페메뉴" onclick="changeMarker('카페')">
+                    <span class="ico_comm ico_카페"></span>
+                    카페
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+<div id="map" style="width: 750px;height:350px;"></div>
+
+	<div id="map" style="width:750px;height:350px;"></div>
+
+	<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=d6eaff0ce511515f5095f4ec95ad7fe6"></script>
+	<script>
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+		    mapOption = {
+		        center: new kakao.maps.LatLng(36.54326, 128.79626), // 지도의 중심좌표
+		        level: 2, // 지도의 확대 레벨
+		        mapTypeId : kakao.maps.MapTypeId.ROADMAP // 지도종류
+		    }; 
+
+		// 지도를 생성한다 
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+        var 밥데이터 = [ 
+        new kakao.maps.LatLng(36.544407218988, 128.79339912982957),
+        new kakao.maps.LatLng(36.544416680246755, 128.79313533424732),
+        new kakao.maps.LatLng(36.54505858950774, 128.79473268129036),
+        new kakao.maps.LatLng(36.54507590699675, 128.79382100098928),
+        new kakao.maps.LatLng(36.544522646268135, 128.79249351016273),
+        new kakao.maps.LatLng(36.54364356724116, 128.7928314567327),
+        new kakao.maps.LatLng(36.54470447757363, 128.79397397191173),
+        new kakao.maps.LatLng(36.54496619685779, 128.79371587835163),
+        new kakao.maps.LatLng(36.545163935496724, 128.7938984154769),
+        new kakao.maps.LatLng(36.54511757576579, 128.79411863768175),
+        new kakao.maps.LatLng(36.54501111763476, 128.79504420421142),
+        new kakao.maps.LatLng(36.54446392310715, 128.7907015719657),
+        new kakao.maps.LatLng(36.54449528440546, 128.79273791849235),
+        new kakao.maps.LatLng(36.543977253948356, 128.79368174863066),
+        new kakao.maps.LatLng(36.53993908876969, 128.79609447464355),
+        new kakao.maps.LatLng(36.54054713778694, 128.7965993755515),
+        new kakao.maps.LatLng(36.54473594388638, 128.7920391575396),
+        new kakao.maps.LatLng(36.54351884791678, 128.79239038564066),
+        new kakao.maps.LatLng(36.544456496692064, 128.79270170867122),
+        new kakao.maps.LatLng(36.54508469090863, 128.79443486896747),
+        new kakao.maps.LatLng(36.54432112147992, 128.79316242040082),
+        new kakao.maps.LatLng(36.544606851303335, 128.792770260002),
+        new kakao.maps.LatLng(36.54359731247496, 128.79371832556578),
+        new kakao.maps.LatLng(36.54389327956685, 128.7929040690406),
+        new kakao.maps.LatLng(36.54470447757363, 128.793799678402),
+        new kakao.maps.LatLng(36.53989229877672, 128.79599403545416),
+        new kakao.maps.LatLng(36.53992769875703, 128.79662313543807),
+        new kakao.maps.LatLng(36.54464375011001, 128.79299990347963),
+        new kakao.maps.LatLng(36.545085962396506, 128.79462574195438),
+        new kakao.maps.LatLng(36.543930810408476, 128.7927221155747),
+        new kakao.maps.LatLng(36.543332032087385, 128.7923081067689),
+        new kakao.maps.LatLng(36.54511216497807, 128.7941221333538),
+        new kakao.maps.LatLng(36.54469185300399, 128.7929999980689),
+        new kakao.maps.LatLng(36.54063669042581, 128.7969020851726),
+        new kakao.maps.LatLng(36.54054077982838, 128.79709039434317),
+        new kakao.maps.LatLng(36.5427124007716, 128.79709207148505),
+        new kakao.maps.LatLng(36.542780529300984, 128.7967508076051)
+        ];
+        var 술데이터 = [ 
+        new kakao.maps.LatLng(36.54286510110729, 128.79312465904061),
+        new kakao.maps.LatLng(36.544573736973305, 128.793208349096),
+        new kakao.maps.LatLng(36.54464942684988, 128.79259125585145),
+        new kakao.maps.LatLng(36.544866854288486, 128.79421756102602),
+        new kakao.maps.LatLng(36.54431493492298, 128.79246645449632),
+        new kakao.maps.LatLng(36.54512931774481, 128.79466401036765),
+        new kakao.maps.LatLng(36.5434351467591, 128.7932508963154),
+        new kakao.maps.LatLng(36.54493634614174, 128.791874201685),
+        new kakao.maps.LatLng(36.54366125403535, 128.7927377336076),
+        new kakao.maps.LatLng(36.54433308073319, 128.79336755831886),
+        new kakao.maps.LatLng(36.54334955541744, 128.79306248394093),
+        new kakao.maps.LatLng(36.54440752875558, 128.79340377452067),
+        new kakao.maps.LatLng(36.539896266488306, 128.79663005396515),
+        new kakao.maps.LatLng(36.543117884791585, 128.79332968928387),
+        new kakao.maps.LatLng(36.54449528440546, 128.79273791849235)
+        ];
+        var 카페데이터 = [ 
+        new kakao.maps.LatLng(36.544813995237966, 128.7947979396901),
+        new kakao.maps.LatLng(36.54498153569947, 128.79517881336483),
+        new kakao.maps.LatLng(36.545218989395465, 128.79437867781644),
+        new kakao.maps.LatLng(36.54510772603174, 128.794118476899),
+        new kakao.maps.LatLng(36.54495738060344, 128.79403830273122),
+        new kakao.maps.LatLng(36.544528058225886, 128.79438853662904),
+        new kakao.maps.LatLng(36.5443369091907, 128.79248476221593),
+        new kakao.maps.LatLng(36.54367010704434, 128.79274018053806),
+        new kakao.maps.LatLng(36.54455258863365, 128.79306665608618)
+        ];
+
+        var 데이터 = [
+            [36.544407218988, 128.79339912982957, '<div style="padding:5px">솥뚜껑삼겹살(밥)</div><div style="color:#FF0000">추천메뉴</div><div>삼겹살</div><div style="color:#50BCDF">삼겹살이 맛있고, 밑반찬으로 명나물을 주신다.</div>'],
+            [36.544416680246755, 128.79313533424732, '<div style="padding:5px">비행장(밥)</div><div style="color:#FF0000">추천메뉴</div><div>김치양념삼결살</div><div style="color:#50BCDF">김치양념삼겹살을 먹고 볶음밥이 필수다.</div>'],
+            [36.54505858950774, 128.79473268129036, '<div style="padding:5px">송천솔뫼국밥(밥)</div><div style="color:#FF0000">추천메뉴</div><div>돼지국밥</div><div>순대국밥</div><div style="color:#50BCDF">술먹고 해장하기 좋다.</div>'],
+            [36.54507590699675, 128.79382100098928, '<div style="padding:5px">구이마을(밥)</div><div style="color:#FF0000">추천메뉴</div><div>치즈불삼겹</div><div>삼겹살</div><div style="color:#50BCDF">치즈불삼겹이 유명하고 맛있다.</div>'],
+            [36.544522646268135, 128.79249351016273, '<div style="padding:5px">일미닭갈비(밥)</div><div style="color:#FF0000">추천메뉴</div><div>감자탕</div><div>닭갈비</div><div style="color:#50BCDF">싼 가격에 닭갈비를 먹고 볶음밥까지 먹을 수 있다.</div>'],
+            [36.54364356724116, 128.7928314567327, '<div style="padding:5px">사랑드림(밥)</div><div style="color:#FF0000">추천메뉴</div><div>뼈해장국</div><div>뚝배기 불고기</div><div style="color:#50BCDF">모든 음식이 무난하다.</div>'],
+            [36.54470447757363, 128.79397397191173, '<div style="padding:5px">청춘밥상(밥)</div><div style="color:#FF0000">추천메뉴</div><div>밀푀유나베</div><div>두루치기</div><div style="color:#50BCDF">밀푀유나베 칼국수가 무한리필이여서 배부르게 먹을 수 있다.</div>'],
+            [36.54496619685779, 128.79371587835163, '<div style="padding:5px">상수리식당(밥)</div><div style="color:#FF0000">추천메뉴</div><div>제육덮밥</div><div>짬뽕 순두부</div><div style="color:#50BCDF">대부분 무난하다.</div><div style="color:#50BCDF">2인 메뉴가 많다.</div>'],
+            [36.545163935496724, 128.7938984154769, '<div style="padding:5px">백두철판(밥)</div><div style="color:#FF0000">추천메뉴</div><div>돼지철판정식</div><div>꼬꼬철판정식</div><div style="color:#50BCDF">선배들이 후배 밥 사줄때 많이 온다.</div>'],
+            [36.54511757576579, 128.79411863768175, '<div style="padding:5px">종이밥(밥)</div><div style="color:#FF0000">추천메뉴</div><div>스팸밥</div><div>폭탄밥</div><div style="color:#50BCDF">유튜버 잇썹이 언급할 정도의 가성비집</div>'],
+            [36.54501111763476, 128.79504420421142, '<div style="padding:5px">솔뫼찜닭(밥)</div><div style="color:#FF0000">추천메뉴</div><div>찜닭</div><div>치즈찜닭</div><div style="color:#50BCDF">양이 많아서 3~4명에서 먹어도 좋다.</div>'],
+            [36.54446392310715, 128.7907015719657, '<div style="padding:5px">동진가든(밥)</div><div style="color:#FF0000">추천메뉴</div><div>돼지갈비</div><div style="color:#50BCDF">양념을 직접 만드셔서 안물리고 맛있게 먹을 수 있다.</div>'],
+            [36.54449528440546, 128.79273791849235, '<div style="padding:5px">승부닭(밥)</div><div style="color:#FF0000">추천메뉴</div><div>짜글이</div><div>돼지국밥</div><div style="color:#50BCDF">논골의 밥집</div><div style="color:#50BCDF">짜글이와 계란후라이를 같이 먹으면 맛있다.</div>'],
+            [36.543977253948356, 128.79368174863066, '<div style="padding:5px">지지고(밥)</div><div style="color:#FF0000">추천메뉴</div><div>컵밥</div><div>우동</div><div style="color:#50BCDF"></div><div style="color:#50BCDF">불향나는 맛 짱뽕맛 밥</div><div style="color:#50BCDF">우동</div>'],
+            [36.53993908876969, 128.79609447464355, '<div style="padding:5px">혜성식당(밥)</div><div style="color:#FF0000">추천메뉴</div><div>치즈불돌</div><div>뚝배기 불고기</div><div style="color:#50BCDF"></div><div style="color:#50BCDF">치즈불돌이 맛있는 논골에 있는 밥집</div>'],
+            [36.54054713778694, 128.7965993755515, '<div style="padding:5px">장도뚝배기(밥)</div><div style="color:#FF0000">추천메뉴</div><div치킨덮밥</div><div>돈까스덮밥</div><div style="color:#50BCDF">튀김류 덮밥이 맛있다.</div>'],
+            [36.54286510110729, 128.79312465904061, '<div style="padding:5px">내일로 가는 마차(술)</div><div style="color:#FF0000">추천메뉴</div><div>김치전</div><div>닭똥집</div><div style="color:#50BCDF">안주맛집</div><div style="color:#50BCDF">술 많이 마시면 안주 서비스가 나온다.</div>'],
+            [36.544573736973305, 128.793208349096, '<div style="padding:5px">엑스칼리버(술)</div><div style="color:#FF0000">추천메뉴</div><div>닭사리볶음</div><div>모듬 튀김</div><div style="color:#50BCDF">과모임이나 동아리 회식할 때 많이 찾는다.</div>'],
+            [36.54464942684988, 128.79259125585145, '<div style="padding:5px">피치콜(술)</div><div style="color:#FF0000">추천메뉴</div><div>치킨</div><div>돼지김치찌개</div><div style="color:#50BCDF">치킨+피자 가격이 싸고, 돼지김치찌개가 정말 맛있다.</div>'],
+            [36.544866854288486, 128.79421756102602, '<div style="padding:5px">내고향막창(술)</div><div style="color:#FF0000">추천메뉴</div><div>막창</div><div>닭발</div><div style="color:#50BCDF">가격이 싸고 고기 종류가 다양하게 있다.</div>'],
+            [36.54431493492298, 128.79246645449632, '<div style="padding:5px">써클페이스(술)</div><div style="color:#FF0000">추천메뉴</div><div>닭발</div><div>골뱅이 소면</div><div style="color:#50BCDF">과팅할때 많이 찾고 기본안주가 많이 나온다.</div>'],
+            [36.54512931774481, 128.79466401036765, '<div style="padding:5px">달빛포차(술)</div><div style="color:#FF0000">추천메뉴</div><div>숯불석쇠불고기</div><div>짜글이</div><div style="color:#50BCDF">셀프로 계란후라이가 무제한이다.</div>'],
+            [36.5434351467591, 128.7932508963154, '<div style="padding:5px">누나네 가자(술)</div><div style="color:#FF0000">추천메뉴</div><div>닭똥집 튀김</div><div>육회</div><div style="color:#50BCDF">이번에 새로 생긴 술집으로 안주가 맛있다.</div>'],
+            [36.54493634614174, 128.791874201685, '<div style="padding:5px">여우주(술)</div><div style="color:#FF0000">추천메뉴</div><div>모둠전</div><div style="color:#50BCDF">비오는 날 막걸리와 전을 먹을 수 있는 맛집</div>'],
+            [36.54366125403535, 128.7927377336076, '<div style="padding:5px">벅수포차(술)</div><div style="color:#FF0000">추천메뉴</div><div>짬뽕탕</div><div>모둠회</div><div style="color:#50BCDF">안동대에서 회를 먹을 수 있는 맛집</div>'],
+            [36.54433308073319, 128.79336755831886, '<div style="padding:5px">통술(술)</div><div style="color:#FF0000">추천메뉴</div><div>수육</div><div>김치찌개</div><div style="color:#50BCDF">방에서 조용히 술을 마실 수 있다.</div>'],
+            [36.54334955541744, 128.79306248394093, '<div style="padding:5px">디스 플레이스(술)</div><div style="color:#FF0000">추천메뉴</div><div>소곱창 전골</div><div>차돌박이 떡볶이</div><div style="color:#50BCDF">인테리어가 먹지다.</div>'],
+            [36.54440752875558, 128.79340377452067, '<div style="padding:5px">122번지(술)</div><div style="color:#FF0000">추천메뉴</div><div>꼬꼬타코</div><div>차돌숙주볶음</div><div style="color:#50BCDF">안주가 전체적으로 맛있고, 손님이 많다</div>'],
+            [36.539896266488306, 128.79663005396515, '<div style="padding:5px">온도(술)</div><div style="color:#FF0000">추천메뉴</div><div>닭한마리</div><div>닭발</div><div style="color:#50BCDF">닭한마리에 새벽까지 마실 수 있을만큼 양이 많다.</div>'],
+            [36.543117884791585, 128.79332968928387, '<div style="padding:5px">깜닥깜닭(술)</div><div style="color:#FF0000">추천메뉴</div><div>국물닭발세트</div><div>치킨</div><div style="color:#50BCDF">국물닭발세트가 유명하고 치킨이 싸고 맛있다.</div>'],
+            [36.54449528440546, 128.79273791849235, '<div style="padding:5px">승부닭(술)</div><div style="color:#FF0000">추천메뉴</div><div>전기구이 닭</div><div>전기구이 통삼겹</div><div style="color:#50BCDF">두 메뉴 다 맛있고, 가격이 싸다.</div>'],
+            [36.544813995237966, 128.7947979396901, '<div style="padding:5px">쥬씨(카페)</div><div style="color:#FF0000">추천메뉴</div><div>딸기바나나</div><div>망고바나나</div><div style="color:#50BCDF">과일로 만든 음료수라서 부담없이 먹을 수 있다.</div>'],
+            [36.54498153569947, 128.79517881336483, '<div style="padding:5px">카페달콤해(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">스무디잔이 예쁘다.</div>'],
+            [36.545218989395465, 128.79437867781644, '<div style="padding:5px">더 소아즈 커피(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">고양이 두마리가 마스코트이다.</div>'],
+            [36.54495738060344, 128.79403830273122, '<div style="padding:5px">별다방(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">테이크아웃 전문점</div>'],
+            [36.544528058225886, 128.79438853662904, '<div style="padding:5px">카페365(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">소아즈와 투탑 카페</div><div style="color:#50BCDF">2층 카페이다.</div>'],
+            [36.54510772603174, 128.794118476899, '<div style="padding:5px">커피킹(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">테이크 아웃 전문이지만, 날씨 좋을 때 앞에 의자에서 먹기좋다.</div>'],
+            [36.5443369091907, 128.79248476221593, '<div style="padding:5px">봄봄(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">테이크아웃 전문점</div><div style="color:#50BCDF">저렴한 아메리카노!</div>'],
+            [36.54367010704434, 128.79274018053806, '<div style="padding:5px">이디야커피(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">공부하기 좋고, 디저트가 맛있다.</div>'],
+            [36.54455258863365, 128.79306665608618, '<div style="padding:5px">커피베이(카페)</div><div style="color:#FF0000">추천메뉴</div><div>커피</div><div style="color:#50BCDF">새로생긴 맛집!</div>'],
+            [36.54473594388638, 128.7920391575396, '<div style="padding:5px">신전떡볶이(분식)</div><div style="color:#FF0000">추천메뉴</div><div>떡볶이</div><div>튀김</div><div style="color:#50BCDF">다들 아는 그 맛!</div>'],
+            [36.54351884791678, 128.79239038564066, '<div style="padding:5px">또또분식(분식)</div><div style="color:#FF0000">추천메뉴</div><div>즉석 떡볶이</div><div>김밥</div><div style="color:#50BCDF">평범한 분식집의 느낌</div>'],
+            [36.544456496692064, 128.79270170867122, '<div style="padding:5px">분식센터(분식)</div><div style="color:#FF0000">추천메뉴</div><div>떡볶이</div><div>튀김</div><div style="color:#50BCDF">새벽 4시까지 하고, 메뉴가 많다.</div>'],
+            [36.54508469090863, 128.79443486896747, '<div style="padding:5px">가미노야끼(분식)</div><div style="color:#FF0000">추천메뉴</div><div>타코야끼</div><div>막동이</div><div style="color:#50BCDF">타코야끼가 싸고 맛있다.</div><div style="color:#50BCDF">막동이가 유명하다.</div>'],
+            [36.54432112147992, 128.79316242040082, '<div style="padding:5px">만찐두빵(분식)</div><div style="color:#FF0000">추천메뉴</div><div>김치볶음밥</div><div>마약국수</div><div style="color:#50BCDF">김치볶음밥이 고슬고슬 부드럽다.</div>'],
+            [36.544606851303335, 128.792770260002, '<div style="padding:5px">도그도그(분식)</div><div style="color:#FF0000">추천메뉴</div><div>미국식 핫도그</div><div style="color:#50BCDF">간단하고 맛있게 먹고 싶을때 좋다.</div>'],
+            [36.54359731247496, 128.79371832556578, '<div style="padding:5px">피오르달리조 안동대점(양식)</div><div style="color:#FF0000">추천메뉴</div><div>몽골리안파스타</div><div>파이피자</div><div style="color:#50BCDF">안동대에서 가장 고급진 레스토랑</div>'],
+            [36.54389327956685, 128.7929040690406, '<div style="padding:5px">아삶공(아름다운 삶의 공간(양식))</div><div style="color:#FF0000">추천메뉴</div><div>빠네파스타</div><div>필라프</div><div style="color:#50BCDF">가격이 싼 양식집, 다양한 술</div>'],
+            [36.54470447757363, 128.793799678402, '<div style="padding:5px">원마인드(양식)</div><div style="color:#FF0000">추천메뉴</div><div>갈릭치즈돈까스</div><div>빙수</div><div style="color:#50BCDF">고구마가 매우 달달하고 맛있다.</div>'],
+            [36.53989229877672, 128.79599403545416, '<div style="padding:5px">리코리아(양식)</div><div style="color:#FF0000">추천메뉴</div><div>브리또</div><div>피자</div><div style="color:#50BCDF">피자 토핑이 많다</div>'],
+            [36.53992769875703, 128.79662313543807, '<div style="padding:5px">델브리또</div><div style="color:#FF0000">추천메뉴</div><div>브리또</div><div style="color:#50BCDF">안동대 대표 브리또 집, 밥 빼고 감자추가!!</div>'],
+            [36.54464375011001, 128.79299990347963, '<div style="padding:5px">스마일 마라탕(중식)</div><div style="color:#FF0000">추천메뉴</div><div>마라탕</div><div>꿔바로우</div><div style="color:#50BCDF">안동대 유일 마라탕집, 꿔바로우 맛있다.</div>'],
+            [36.545085962396506, 128.79462574195438, '<div style="padding:5px">안동대 짬뽕 전문점(중식)</div><div style="color:#FF0000">추천메뉴</div><div>짜장면</div><div>짬뽕</div><div style="color:#50BCDF">평범한 중국집</div>'],
+            [36.543930810408476, 128.7927221155747, '<div style="padding:5px">바베또 피자카페(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>피자</div><div>치킨</div><div style="color:#50BCDF">피자가 집에 안주로 먹기 괜찮다.</div>'],
+            [36.543332032087385, 128.7923081067689, '<div style="padding:5px">굽용이두마리치킨(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>치킨</div><div style="color:#50BCDF">순살에 양이 매우 많다.</div>'],
+            [36.54511216497807, 128.7941221333538, '<div style="padding:5px">안동대 BHC(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>치킨</div><div>각종 안주</div><div style="color:#50BCDF">뿌링클과 치즈볼을 같이 먹으면 좋다.</div>'],
+            [36.54469185300399, 128.7929999980689, '<div style="padding:5px">투존치킨(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>치킨</div><div style="color:#50BCDF">3가지 맛의 치킨을 싼 가격에 먹을 수 있다.</div>'],
+            [36.54063669042581, 128.7969020851726, '<div style="padding:5px">이삭토스트(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>토스트</div><div>음료수</div><div style="color:#50BCDF">다들 아는 그 맛!</div>'],
+            [36.54054077982838, 128.79709039434317, '<div style="padding:5px">파나몬스(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>토스트</div><div>와플</div><div style="color:#50BCDF">숯불구이토스트와 와플이 끝내준다.</div>'],
+            [36.5427124007716, 128.79709207148505, '<div style="padding:5px">파리바게트(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>빵</div><div style="color:#50BCDF">빵 종류가 그리 많지는 않다.</div><div style="color:#50BCDF">케이크는 미리 주문해야한다.</div>'],
+            [36.542780529300984, 128.7967508076051, '<div style="padding:5px">맘스터치(패스트푸드)</div><div style="color:#FF0000">추천메뉴</div><div>햄버거</div><div>치킨</div><div style="color:#50BCDF">다들 아는 그 맛!</div>'],    
+        ]
+
+        for (var i=0; i < 데이터.length; i++){
+   // 지도에 마커를 생성하고 표시한다
+   var marker = new kakao.maps.Marker({
+            position: new kakao.maps.LatLng(데이터[i][0],데이터[i][1]), //마커의 좌표
+            clickable: true
+        });
+        marker.setMap(map);
+        
+        // 마커를 클릭했을 때 마커 위에 표시할 인포윈도우를 생성합니다
+var iwContent = '<div style="padding:5px;"></div>', // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+    iwRemoveable = true; // removeable 속성을 ture 로 설정하면 인포윈도우를 닫을 수 있는 x버튼이 표시됩니다
+
+ 
+// 인포윈도우를 생성합니다
+
+var infowindow = new kakao.maps.InfoWindow({
+    content : 데이터[i][2],
+    removable : iwRemoveable
+});
+// 마커에 클릭이벤트를 등록합니다
+kakao.maps.event.addListener(marker, 'click', function(info, mark) {
+    return function() { 
+        info.open(map, mark);
+    }
+}(infowindow, marker));
+
+}
+
+
+    var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';  // 마커이미지의 주소입니다. 스프라이트 이미지 입니다
+    밥Markers = [],
+    술Markers = [],
+    카페Markers = [];
+    
+create밥Markers(); // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가합니다
+create술Markers();
+create카페Markers();
+
+changeMarker('밥'); // 지도에 커피숍 마커가 보이도록 설정합니다    
+
+// 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
+function createMarkerImage(src, size, options) {
+    var markerImage = new kakao.maps.MarkerImage(src, size, options);
+    return markerImage;            
+}
+
+// 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
+function createMarker(position, image) {
+    var marker = new kakao.maps.Marker({
+        position: position,
+        image: image
+    });
+    
+    return marker;  
+}   
+// 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
+function create밥Markers() {
+    
+    for (var i = 0; i < 밥데이터.length; i++) {  
+        
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {  
+                spriteOrigin: new kakao.maps.Point(10, 0),    
+                spriteSize: new kakao.maps.Size(36, 98)  
+            };     
+        
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+            marker = createMarker(밥데이터[i], markerImage);  
+        
+        // 생성된 마커를 커피숍 마커 배열에 추가합니다
+        밥Markers.push(marker);
+    }     
+}
+
+// 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
+function set밥Markers(map) {        
+    for (var i = 0; i < 밥Markers.length; i++) {  
+        밥Markers[i].setMap(map);
+    }        
+}
+
+
+function create밥Markers() {
+    
+    for (var i = 0; i < 밥데이터.length; i++) {  
+        
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {  
+                spriteOrigin: new kakao.maps.Point(10, 0),    
+                spriteSize: new kakao.maps.Size(36, 98)  
+            };     
+        
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+            marker = createMarker(밥데이터[i], markerImage);  
+        
+        // 생성된 마커를 커피숍 마커 배열에 추가합니다
+        밥Markers.push(marker);
+    }     
+}
+
+// 커피숍 마커들의 지도 표시 여부를 설정하는 함수입니다
+function set밥Markers(map) {        
+    for (var i = 0; i < 밥Markers.length; i++) {  
+        밥Markers[i].setMap(map);
+    }        
+}
+function create술Markers() {
+    for (var i = 0; i < 술데이터.length; i++) {
+        
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {   
+                spriteOrigin: new kakao.maps.Point(10, 36),    
+                spriteSize: new kakao.maps.Size(36, 98)  
+            };       
+     
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+            marker = createMarker(술데이터[i], markerImage);  
+
+        // 생성된 마커를 편의점 마커 배열에 추가합니다
+        술Markers.push(marker);    
+        }
+    }      
+function set술Markers(map) {        
+    for (var i = 0; i < 술Markers.length; i++) {  
+        술Markers[i].setMap(map);
+    }          
+}
+function create카페Markers() {
+    for (var i = 0; i < 카페데이터.length; i++) {
+        
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {   
+                spriteOrigin: new kakao.maps.Point(10, 36),    
+                spriteSize: new kakao.maps.Size(36, 98)  
+            };       
+     
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),    
+            marker = createMarker(카페데이터[i], markerImage);  
+            
+        // 생성된 마커를 편의점 마커 배열에 추가합니다
+        카페Markers.push(marker);    
+   }
+
+}      
+function set카페Markers(map) {        
+    for (var i = 0; i < 카페Markers.length; i++) {  
+        카페Markers[i].setMap(map);
+    }       } 
+    
+// 카테고리를 클릭했을 때 type에 따라 카테고리의 스타일과 지도에 표시되는 마커를 변경합니다
+function changeMarker(type){
+    
+    var 밥메뉴 = document.getElementById('밥메뉴');
+    var 술메뉴 = document.getElementById('술메뉴');
+    var 카페메뉴 = document.getElementById('카페메뉴');
+    
+    // 밥 카테고리가 클릭됐을 때
+    if (type === '밥') {
+    
+        // 밥 카테고리를 선택된 스타일로 변경하고
+        밥메뉴.className = 'menu_selected';
+        술메뉴.className = '';
+        카페메뉴.className = '';
+        
+        // 커피숍 마커들만 지도에 표시하도록 설정합니다
+        set밥Markers(map);
+        set술Markers(null);
+        set카페Markers(null);
+
+        return 밥Markers;
+    }
+    else if (type === '술') { // 편의점 카테고리가 클릭됐을 때
+    
+        밥메뉴.className = '';
+        술메뉴.className = 'menu_selected';
+        카페메뉴.className = '';
+        
+        set밥Markers(null);
+        set술Markers(map);
+        set카페Markers(null);
+
+        return 술Markers;
+    }
+    else if (type === '카페') { // 편의점 카테고리가 클릭됐을 때
+    
+        밥메뉴.className = '';
+        술메뉴.className = '';
+        카페메뉴.className = 'menu_selected';
+    
+        set밥Markers(null);
+        set술Markers(null);
+        set카페Markers(map);
+        return 카페Markers;
+} 
+}
+
+// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
+if (navigator.geolocation) {
+    
+    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
+    navigator.geolocation.getCurrentPosition(function(position) {
+        
+        var lat = position.coords.latitude, // 위도
+            lon = position.coords.longitude; // 경도
+        
+        var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+            message = '<div style="padding:5px;">여기에 계신가요?!</div>'; // 인포윈도우에 표시될 내용입니다
+        
+        // 마커와 인포윈도우를 표시합니다
+        displayMarker(locPosition, message);
+            
+      });
+    
+} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
+    
+    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
+        message = 'geolocation을 사용할수 없어요..'
+        
+    displayMarker(locPosition, message);
+}
+
+// 지도에 마커와 인포윈도우를 표시하는 함수입니다
+function displayMarker(locPosition, message) {
+
+    // 마커를 생성합니다
+    var marker = new kakao.maps.Marker({  
+        map: map, 
+        position: locPosition
+    }); 
+    
+    var iwContent = message, // 인포윈도우에 표시할 내용
+        iwRemoveable = true;
+
+    // 인포윈도우를 생성합니다
+    var infowindow = new kakao.maps.InfoWindow({
+        content : iwContent,
+        removable : iwRemoveable
+    });
+    
+    // 인포윈도우를 마커위에 표시합니다 
+    infowindow.open(map, marker);
+    
+    // 지도 중심좌표를 접속위치로 변경합니다
+    map.setCenter(locPosition);      
+}    
+
+
+  
+	</script>
+</div>
+
+
+</body>
+</html>  
