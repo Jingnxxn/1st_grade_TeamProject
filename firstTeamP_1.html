@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    box-sizing: border-box;
+}
+/*배경화면 사진을 불러오고 크기를 조정*/
+.image-bg{
+    background-image: url("https://ifh.cc/g/pXHxH0.jpg");
+    background-size: cover;
+    background-position: center center;
+    width: 100vw;
+    height: 100vh;
+}
+
+/*사이트의 크기를 지정*/
+.wrap{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    color:cornsilk;
+    text-align: center;
+}
+/*안동대학교 맛집의 글자위치 크기 폰트*/
+.lg-text{
+    position: absolute;
+    top: 520px;
+    left: 50px;
+    font-size:8rem;
+    margin-bottom: 5px;
+    font-family: 'Black Han Sans', sans-serif;
+}
+/*버튼의 큰타이틀로 위치 사이즈 지정*/
+.tab1{
+    position: absolute;
+    top: 630px;
+    left: 1000px;
+    font-size: 50px;
+}
+/*버튼안의 글씨 폰트사이즈 색깔 위치 애니메이션 효과를 넣기위해 설정하는곳*/
+.btn{
+    font-size: 15px;
+    padding: 10px 25px;
+    border: 5px solid #fff;
+    background-color: transparent;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-weight: bold;
+    position: relative;
+    transition: all 0.4s;
+    overflow: hidden;
+    font-family: 'Bakbak One', cursive;
+}
+/*버튼에 마우스 커서를 올렸을때 나오는 하얀색 부분이 아래에 있는데 그것을 숨기기위한 설정*/
+.btn:focus{
+    outline: none;
+}
+/*버튼에 마우스 커서를 올렸을때 올라오는 사각형의 색깔 크기 글씨 애니메이션 시간 z-index의 위치 설정*/
+.btn::before{
+    content: "";
+    position: absolute;
+    height: 101%;
+    width: 101%;
+    background-color:#fff;
+    top: 100%;
+    left: 0;
+    transition: all 0.4s;
+    z-index: -1;
+}
+/*색깔이 차는 사각형의 위치*/
+.btn:hover::before{
+    transform: translateY(-100%);
+
+}
+/*버튼에 마우스 커서를 올렸을때 버튼의 애니메이션 설정*/
+.btn:hover {
+    color: black;
+    z-index: 0;
+}
+/*아이콘의 세부 설정*/
+.material-icons{
+    position: absolute;
+    top: 665px;
+    left: 920px;
+    font-size:5rem;
+    color: #fff;
+    animation-name: shin;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    animation-direction:alternate;
+}
+/*아이콘의 애니메이션을 시작과 끝점을 설정하는 곳*/
+@keyframes shin {
+    frome{
+        margin-right: 0;
+    }
+    to{
+        margin-left: 10mm;
+    }
+    
+}
+
+/*안동대학교 맛집의 밑의 작은 글씨*/
+  .sm-text{
+    position: absolute;
+    top: 650px;
+    left: 50px;
+    font-size: 2rem;
+    font-family: 'Black Han Sans', sans-serif;
+  }
+    </style>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width= , initial-scale=1.0">
+    <title>안동대학교 맛집</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"  
+      rel="stylesheet"> <!--사이트에서 아이콘을 불러오는 링크-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">  <!--폰트 사이트를 불러오는 링크-->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bakbak+One&family=Black+Han+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Index.html">
+</head>
+<body>
+    <div class="wrap"> 
+        <div class="image-bg"> <!--배경을 지정-->
+            <h1>
+                <span class="material-icons">  <!--사이트에서 특정 아이콘을 불러오는 것-->
+                    label_important
+                    </span>
+            </h1>
+            <p id="dynamic" class="lg-text">   <!--안동대학교 맛집의 타이핑 글씨와 효과를 설정하기위해 지정-->
+            </p>
+            <p class="sm-text">이런맛집이? 뿌슝빠슝!?!?</p>  <!--lg-text의 밑의 글씨를 표현-->
+            <div class="tab1">
+                    <button class="btn" onclick="location.href='Index.html' ">click</button>   <!--지도로 가기위한 버튼을 지정-->
+                </div>
+            </div>
+        </div> 
+    <script src="main.js"></script>
+</body>
+</html>
+
